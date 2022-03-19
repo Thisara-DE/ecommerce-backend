@@ -6,13 +6,59 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', (req, res) => {
   // find all products
-  // be sure to include its associated Category and Tag data
+  
+  Product.findAll({
+    attributes: ['id', 'product_name', 'price', 'stock'],
+    order: ['id'],
+    include: [
+      {
+        model: Category,
+        attributes: ['id','category_name']
+      },
+      {
+        model: Tag,
+        attributes: ['tag_name'],
+        through: ProductTag        
+      }
+    ]
+  }).then(dbProductData => {
+    res.json(dbProductData)
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
 });
 
 // get one product
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  
+  Product.findOne({
+    attributes: ['id', 'product_name', 'price', 'stock'],
+    where: {
+      id: req.params.id
+    },
+    include: [
+      {
+        model: Category,
+        attributes: ['id' ,'category_name']
+      },
+      {
+        model: Tag,
+        attributes: ['tag_name'],
+        through: ProductTag        
+      }
+    ]
+  }).then(dbUserData => {
+    if(!dbUserData) {
+        res.status(404).json({ message: 'No product found with this id'});
+        return;
+    }
+    res.json(dbUserData);
+  }).catch(err => {
+  console.log(err);
+  res.status(500).json(err);
+  });
 });
 
 // create new product
@@ -89,8 +135,22 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+// delete one product by its `id` value
+router.delete('/:id', (req, res) => {  
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(dbProductData => {
+    if(!dbProductData) {
+      res.status(404).json({ message: 'No product found with this id' });
+      return;
+    }
+    res.json(dbProductData);
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
