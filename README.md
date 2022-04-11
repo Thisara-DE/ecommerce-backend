@@ -46,10 +46,7 @@
   <br>
 
   ## Questions
-  If you have any questions, email me: thisaraeragna@gmail.com
-
-  Video walkthrough 1: https://drive.google.com/file/d/1cIUumhXj-kotd_4Y53-6AY9MmEUoqCE4/view <br>
-  Video walkthrough 2: https://drive.google.com/file/d/1x0YhTeekRG1MEFaydnFdsrRaCJiNudC4/view
+  
 
   <br>
 
